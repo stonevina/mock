@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>mock</title>
+		<link rel="stylesheet" href="fe/css/bootstrap.min.css">
+		<link rel="stylesheet" href="fe/ui/dialog/dialog.css"/>
+		<link rel="stylesheet" href="fe/css/mock.index.css"/>
+		
+		<!-- codemirror -->
+		<link rel="stylesheet" href="fe/tools/lib/codemirror.css"/>
+		<link rel="stylesheet" href="fe/tools/addon/display/fullscreen.css">
+		<link rel="stylesheet" href="fe/tools/theme/eclipse.css">
+		<script src="fe/tools/lib/codemirror.js"></script>
+		<script src="fe/tools/lib/formatting.js"></script>
+		<!-- <script src="fe/tools/lib/foldcode.js"></script>  -->
+		<script src="fe/tools/mode/javascript/javascript.js"></script>
+		<script src="fe/tools/mode/xml/xml.js"></script>
+		<script src="fe/tools/mode/css/css.js"></script>
+		<script src="fe/tools/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="fe/tools/addon/display/fullscreen.js"></script>
+		
+		<script src="fe/tools/xss.js"></script>
+	</head>
+	
+	<body>
+		<!-- 接口列表 -->
+		<div>
+			<table class="table table-bordered table-hover" id="mockList">
+		      <caption>模拟接口列表</caption>
+		      <thead>
+		        <tr>
+		          <th>接口ID</th>
+		          <th>接口名称</th>
+		          <th>请求地址</th>
+		          <th>返回结果</th>
+		          <th>接口描述</th>
+		          <th>操作</th>
+		        </tr>
+		      </thead>
+		    </table>
+		</div>
+		<!-- 接口列表  end-->
+		
+		<!-- 创建接口 -->
+		<div>
+			<button type="button" class="btn btn-primary btn-sm" id="J-createMock">新建接口</button>
+			<button type="button" class="btn btn-primary btn-sm" id="J-createMock">生成mock</button>
+		</div>
+	    <!-- 创建接口 end-->
+   		<script src="fe/lib/jquery-1.6.4.js"></script>
+		<script src="fe/lib/sea.js"></script>
+		<script src="fe/mock.index.js"></script>
+		<script id="editMockTemplate" type="text/template">
+			<form class="new-mock-form">
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">接口名称</label>
+			    <input type="text" class="form-control" placeholder="接口名称" name="mockName" value="<%this[0].mockName%>">
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputPassword1">接口url</label>
+			    <input type="text" class="form-control" placeholder="接口url" name="url" value="<%this[0].url%>">
+			  </div>			  
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">接口返回值</label>
+			    <textarea class="form-control" rows="3" placeholder="接口返回值" name="content" id="code"><%this[0].content%></textarea>
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputPassword1">接口描述</label>
+			    <input type="text" class="form-control" placeholder="接口描述" name="description" value="<%this[0].description%>">
+			  </div>
+			  <input type="hidden" name="action" value="edit">
+			  <input type="hidden" name="mockID" value="<%this[0].mockID%>">
+			  <a class="btn btn-default" id="J-edit-submit">提交</a>
+			</form>
+		</script>
+		<script id="newMockTemplate" type="text/template">
+			<form class="new-mock-form">
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">接口名称</label>
+			    <input type="text" class="form-control" placeholder="接口名称" name="mockName">
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputPassword1">接口url</label>
+			    <input type="text" class="form-control" placeholder="接口url" name="url">
+			  </div>			  
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">接口返回值</label>
+			    <textarea class="form-control" rows="3" placeholder="接口返回值" name="content" id="code"></textarea>
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputPassword1">接口描述</label>
+			    <input type="text" class="form-control" placeholder="接口描述" name="description">
+			  </div>
+  			  <div class="form-group">
+			    <label for="exampleInputPassword1">用户组</label>
+			   	<select class="form-control" name="mockGroup">
+  					<option>1</option>
+  					<option>2</option>
+  					<option>3</option>
+  					<option>4</option>
+  					<option>5</option>
+				</select>
+			  </div>
+		  	  <div class="form-group">
+			    <label for="exampleInputPassword1">创建者</label>
+			    <input type="text" class="form-control" placeholder="创建者" name="author">
+			  </div>
+			  <a class="btn btn-default" id="J-submit">提交</a>
+			</form>
+		</script>
+	    <script id="mockListTemplate" type="text/template">
+			<tbody>
+				<%for(var i = 0; i < this.length; i++) {%>\
+					<tr>
+						<td><%this[i].mockID%></td>
+						<td><%this[i].mockName%></td>
+						<td><%this[i].url%></td>
+						<td width="400"><div class="mock-content"><%this[i].content%></div></td>
+						<td><%this[i].description%></td>
+						<td>
+							<button type="button" class="btn btn-success btn-sm"><a target="_blank" href="http://localhost/mock/mockQueryAction.action?mockID=<%this[i].mockID%>">预览</a></button>
+							<button type="button" class="btn btn-info btn-sm" editmockid="<%this[i].mockID%>">编辑</button>
+							<button type="button" class="btn btn-danger btn-sm" deletemockid="<%this[i].mockID%>">删除</button>
+						</td>
+					</tr>
+				<%}%>
+			</tbody>
+		</script>
+	</body>
+</html>
